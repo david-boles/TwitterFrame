@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+  <meta charset="utf-8">
+  <title>Sliced</title>
+  <link rel="icon" 
+      type="image/gif" 
+      href="../local/assets/favicon.png">
+
+  <style type="text/css">
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+      background-color: #5d5b5b;
+    }
+
+    .slide_frame {
+      position: absolute;
+      width: 100%;
+      height: calc(100% - 75px);
+    }
+
+    .slide {
+      position: relative;
+      max-width:100%;
+      max-height:100%;
+      display: block;
+
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    #s0 {
+      opacity: 1;
+    }
+
+    #s1 {
+      opacity: 0;
+    }
+
+    .control_frame {
+      position: absolute;
+      width: 100%;
+      height: 75px;
+      top:calc(100% - 75px);
+    }
+
+    .button {
+      position:absolute;
+      display: block;
+      width: 50%;
+      height: 75px;
+      bottom: 0px;
+      color: #FEFEFE;
+      border-color: #FEFEFE;
+      background-color: #ff4d13;
+      font-family: "Arial Black", Gadget, sans-serif;
+      font-size: 48px;
+      outline:none;
+    }
+
+    #button_like {
+      left: 0%;
+    }
+
+    #button_dislike {
+      left: 50%;
+    }
+
+  </style>
+
+</head>
+
+
+<body onload="scheduleUpdate()">
+
+  <div class="slide_frame">
+    <img class="slide" id="s0" src="init0.png" alt="Slideshow">
+  </div>
+
+  <div class="slide_frame">
+    <img class="slide" id="s1" src="init1.png" alt="Slideshow">
+  </div>
+
+
+  <form action="display.html" method="post">
+    <input class="button" id="button_like" type="submit" value="Like">
+  </form>
+
+  <form action="display.html" method="post">
+    <input class="button" id="button_dislike" type="submit" value="Dislike">
+  </form>
+
+
+  <script id="slide_script">
+    var framePos = 0;
+    var increasing = true;
+    var increment = 0.0125;
+    var slideTime = 5000;
+    var images = ["http://nextgenlearning.org/sites/default/files/styles/grantee_logo/public/grantee-logos/Screen%20Shot%202014-05-02%20at%201.13.25%20PM.png?itok=Xf_UgZon", "https://i.ytimg.com/vi/rK1fhRf1a7A/maxresdefault.jpg", "http://static1.squarespace.com/static/53d2a7e3e4b0b557d6a80e66/t/5542685de4b0ccc75fc2cc1c/1430415533167/?format=750w", "http://fm.cnbc.com/applications/cnbc.com/resources/img/editorial/2012/12/14/100316358-oracle_headquarters_getty.530x298.jpg?v=1442337139"];
+    var nextPic = 1;
+
+    document.getElementById("s0").src = images[0];
+    document.getElementById("s1").src = images[1];
+
+    function scheduleUpdate() {
+      var timeout = 50;
+
+      if(framePos>=1 || framePos<=0) {
+        timeout = slideTime;
+
+        if(framePos>=1) document.getElementById("s0").src = images[nextPic];
+        if(framePos<=0) document.getElementById("s1").src = images[nextPic];
+
+        nextPic++;
+        nextPic %= images.length;
+      }
+
+      setTimeout(function () {
+        update();
+      }, timeout);
+    }
+
+    function update() {
+      document.getElementById("s1").style.opacity = framePos;
+      document.getElementById("s0").style.opacity = 1-framePos;
+
+      if(framePos > 1) increasing = false;
+      if(framePos < 0) increasing = true;
+
+      if(increasing) framePos += increment;
+      if(!increasing) framePos -= increment;
+      scheduleUpdate();
+    }
+  </script>
+</body>
+
+</html>
