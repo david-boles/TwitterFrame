@@ -12,8 +12,8 @@ public class Photo implements Serializable {
 	
 	public Photo(String id) {
 		this.id = id;
-		this.posVote = 0;
-		this.negVote = 0;
+		this.posVote = 1;
+		this.negVote = 1;
 	}
 	
 	public Photo(String id, int posVote, int negVote) {
